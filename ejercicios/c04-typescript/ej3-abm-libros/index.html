@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Catálogo</h1>
+
+    <section>
+        <h2>Agregar nuevo libro</h2>
+        <form id="formularioLibro">
+            <input type="text" id="inputTitulo" placeholder="Título del libro" required>
+            <input type="text" id="inputAutor" placeholder="Autor" required>
+            <input type="number" id="inputPrecio" placeholder="Precio" min="1" required>
+            <input type="text" id="inputGenero" placeholder="Género (Opcional)">
+
+            <label>
+                <input type="checkbox" id="inputDisponible" checked> Disponible
+            </label>
+
+            <button type="button" id="botonAgregar">Agregar</button>
+        </form>
+        <div id="errorForm" style="color: red; font-weight: bold; margin-top: 10px;"></div>
+    </section>
+
+    <hr>
+
+    <section>
+        <div>
+            <input type="text" id="filtroAutor">
+            <button id="filtrar">Filtrar</button>
+        </div>
+        <br>
+        <div>
+            <button id="mostrarDisponibles">Solo disponibles</button>
+            <button id="mostrarTodos">Ver todos</button>
+        </div>
+    </section>
+
+    <ul id="listado"></ul>
+
+    <p id="stats"></p>
+
+    <script src="app.js"></script>
+</body>
+</html>
