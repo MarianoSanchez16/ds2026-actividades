@@ -60,3 +60,15 @@ if (botonBuscar && inputBusqueda && contenedorResultados && mensajeError && mens
         buscarLibros(query);
     });
 }
+const formularioContacto = document.querySelector('#formularioContacto');
+const mensajeExito = document.querySelector('#mensajeExito');
+if (formularioContacto && mensajeExito) {
+    formularioContacto.addEventListener('submit', (evento) => {
+        evento.preventDefault();
+        mensajeExito.style.display = 'block';
+        formularioContacto.reset();
+        setTimeout(() => {
+            mensajeExito.style.display = 'none';
+        }, 4000);
+    });
+}
