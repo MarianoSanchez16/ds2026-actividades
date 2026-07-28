@@ -1,0 +1,11 @@
+### Hello
+GET http://localhost:3000/
+
+### Obtener el listado completo de libros
+GET http://localhost:3000/libros
+
+### Obtener solo los libros disponibles (Filtro por Query Params)
+GET http://localhost:3000/libros?disponible=true
+
+### Obtener la lista de autores
+GET http://localhost:3000/autores
