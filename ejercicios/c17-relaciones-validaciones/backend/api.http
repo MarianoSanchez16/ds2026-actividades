@@ -1,0 +1,39 @@
+### Configuración de Variables Globales
+@baseUrl = http://localhost:3000/api
+
+### 1. Intentar crear un libro sin título (Zod Error)
+POST {{baseUrl}}/libros
+Content-Type: application/json
+
+{
+    "precio": 5000,
+    "autorId": 1
+}
+
+### 2. Intentar buscar un libro con un ID de ruta que no es número (Zod Params Error)
+GET {{baseUrl}}/libros/abc
+
+
+### 3. Intentar crear un autor con un nombre que ya existe (Unique Constraint P2002)
+POST {{baseUrl}}/autores
+Content-Type: application/json
+
+{
+    "nombre": "Jorge Luis Borges",
+    "nacionalidad": "Argentino"
+}
+
+### 4. Intentar borrar un autor con libros activos (onDelete: Restrict P2003)
+DELETE {{baseUrl}}/autores/1
+
+### 5. Intentar crear un libro asociado a un autorId inexistente (P2003)
+POST {{baseUrl}}/libros
+Content-Type: application/json
+
+{
+    "titulo": "La biblioteca de Babel",
+    "precio": 12000,
+    "imagen": "https://images.unsplash.com/photo-1544947950-fa07a98d237f",
+    "disponible": true,
+    "autorId": 9999
+}
