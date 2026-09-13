@@ -1,0 +1,105 @@
+@baseUrl = http://localhost:3000/api
+
+### 1. Registrar un nuevo usuario (CLIENTE) -> 201 Created
+POST {{baseUrl}}/auth/registro
+Content-Type: application/json
+
+{
+  "nombre": "Carlos Gómez",
+  "email": "carlos@libreria.test",
+  "password": "Cliente1234"
+}
+
+### 2. Intentar registrar el mismo email -> 409 Conflict (P2002)
+POST {{baseUrl}}/auth/registro
+Content-Type: application/json
+
+{
+  "nombre": "Carlos Clon",
+  "email": "carlos@libreria.test",
+  "password": "Password123"
+}
+
+### 3. Login de Administradora (Captura de Token)
+# @name loginAdmin
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@libreria.test",
+  "password": "Admin1234"
+}
+
+### Guardar Token de Admin
+@tokenAdmin = {{loginAdmin.response.body.token}}
+
+### 4. Login de Cliente (Captura de Token)
+# @name loginCliente
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "cliente@libreria.test",
+  "password": "Cliente1234"
+}
+
+### Guardar Token de Cliente
+@tokenCliente = {{loginCliente.response.body.token}}
+
+### 5. Intentar Login con contraseña errónea -> 401 Credenciales inválidas
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@libreria.test",
+  "password": "PasswordErronea"
+}
+
+### 6. Consultar Perfil (/auth/yo) SIN Token -> 401 Falta el token
+GET {{baseUrl}}/auth/yo
+
+### 7. Consultar Perfil (/auth/yo) CON Token de Cliente -> 200 OK
+GET {{baseUrl}}/auth/yo
+Authorization: Bearer {{tokenCliente}}
+
+### 8. Crear libro SIN Token -> 401 Falta el token
+POST {{baseUrl}}/libros
+Content-Type: application/json
+
+{
+  "titulo": "Rayuela",
+  "precio": 7000,
+  "imagen": "https://ejemplo.com/rayuela.webp",
+  "autorId": 1
+}
+
+### 9. Crear libro CON Token de CLIENTE -> 403 No tenés permiso para esta operación
+POST {{baseUrl}}/libros
+Authorization: Bearer {{tokenCliente}}
+Content-Type: application/json
+
+{
+  "titulo": "Rayuela",
+  "precio": 7000,
+  "imagen": "https://ejemplo.com/rayuela.webp",
+  "autorId": 1
+}
+
+### 10. Crear libro CON Token de ADMIN -> 201 Created
+POST {{baseUrl}}/libros
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+  "titulo": "Rayuela",
+  "precio": 7000,
+  "imagen": "https://ejemplo.com/rayuela.webp",
+  "autorId": 1
+}
+
+### 11. Lectura Pública de Libros -> 200 OK
+GET {{baseUrl}}/libros
+
+### 12. Eliminar Libro CON Token de ADMIN -> 204 No Content
+DELETE {{baseUrl}}/libros/1
+Authorization: Bearer {{tokenAdmin}}
